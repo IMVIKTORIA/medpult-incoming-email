@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans+Display:ital,wght@0,100..900;1,100..900&display=swap");
+
+@import url("./reset.scss");
+@import url("./UIKit/shared/style.scss");
+@import url("../src/App/components/SearchContractor/searchContractor.scss");
+@import url("../src/App/components/InsuredList/insuredList.scss");
+@import url("../src/App/components/RequestList/requestsList.scss");
+@import url("../src/App/components/IncomingEmail/incomingEmail.scss");
+@import url("../src/App/components/SliderPanel/sliderPanel.scss");
+@import url("../src/App/components/RequestList/RequestDetails/requestDetails.scss");
+@import url("../src/App/components/Panel/panel.scss");
+@import url("../src/App/components/CustomInputSelect/customInputSelect.scss");
+@import url("../src/App/components/ColumnWithValidation/columnWithValidation.scss");
+
+:root {
+  --medpult-bg-color: #f2f4f6;
+  --medpult-panel-color: white;
+  --medpult-hover-color: #f8f8f8;
+  --medpult-field-border-color: #d9d9d9;
+  --medpult-blue-active-color: #64c3f4;
+  --medpult-blue-link-color: #5295fa;
+  --medpult-alert-color: #ff0505;
+}
+
+// Панель фильтрации
+.filter-panel {
+  margin-bottom: 15px;
+  &__list {
+    list-style-type: none;
+  }
+}
+
+// Сброс стандартных стилей фильтров
+.filter-panel__item--rp .button-add-element {
+  display: none !important;
+}
+
+.filter-panel__item--team .button-add-element {
+  display: none !important;
+}
+
+#modal-incoming-call svg {
+  color: transparent;
+}
+
+.custom-list-selector {
+  background-color: transparent !important;
+}

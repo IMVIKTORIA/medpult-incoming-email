@@ -1,0 +1,35 @@
+#modal-incoming-call .custom-list-header-column {
+  user-select: none;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  padding: 16px;
+
+  &__name {
+    width: 10px;
+    max-width: fit-content;
+    flex: 1;
+    white-space: wrap;
+
+    font-family: "Noto Sans Display";
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 14px;
+    color: #565a62;
+  }
+
+  &__button {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    &.asc {
+      transform: rotate(0deg);
+    }
+    &.desc {
+      transform: rotate(180deg);
+    }
+  }
+}
