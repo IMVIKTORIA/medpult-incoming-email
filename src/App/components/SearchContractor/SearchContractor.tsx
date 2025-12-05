@@ -70,7 +70,12 @@ export default function SearchContractor({
     const redirectUrl = new URL(window.location.origin + "/" + link);
     if (contractorsSearchData.email)
       redirectUrl.searchParams.set("email", contractorsSearchData.email);
-    if (contractorsSearchData.email) utils.redirectSPA(redirectUrl.toString());
+    if (contractorsSearchData.interactionId)
+      redirectUrl.searchParams.set(
+        "interactionId",
+        contractorsSearchData.interactionId
+      );
+    utils.redirectSPA(redirectUrl.toString());
   };
 
   const contractor = contractors.length === 1 ? contractors[0] : undefined;

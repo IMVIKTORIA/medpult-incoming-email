@@ -80,6 +80,12 @@ export default function InsuredList({
     const redirectUrl = new URL(window.location.origin + "/" + link);
     if (contractorsSearchData.email)
       redirectUrl.searchParams.set("email", contractorsSearchData.email);
+
+    if (contractorsSearchData.interactionId)
+      redirectUrl.searchParams.set(
+        "interactionId",
+        contractorsSearchData.interactionId
+      );
     utils.redirectSPA(redirectUrl.toString());
   };
 
@@ -128,13 +134,15 @@ export default function InsuredList({
       insuredId = selected;
     }
 
+    const interactionId = contractorsSearchData.interactionId || "";
     if (contractorsSearchData.email)
       // Открыть форму создания обращения
       openNewRequest(
         contractorsSearchData.email,
         contractorId,
         insuredId,
-        policyId
+        policyId,
+        interactionId
       );
   };
 
