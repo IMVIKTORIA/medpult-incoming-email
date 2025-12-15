@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Scripts from "../../shared/utils/clientScripts";
 import { ContractorListData, ContractorsSearchData } from "../../shared/types";
 import icons from "../../shared/icons";
@@ -24,6 +24,8 @@ export default function SearchContractor({
     return { contractorId, policyId };
   }
 
+  const isFirstRender = useRef(true);
+
   useEffect(() => {
     async function fetchContractors() {
       setLoading(true);
@@ -34,15 +36,18 @@ export default function SearchContractor({
         );
         const contractor = await Scripts.getContractorById(
           contractorId,
+          isFirstRender.current,
           contractorsSearchData.email,
-          policyId
+          policyId,
         );
+
         if (contractor?.data) {
           setContractors([contractor.data]);
           setLoading(false);
           return;
         }
       }
+      
       // Если нет id — обычная логика
       const result = await Scripts.getContractorList(
         0,
@@ -55,6 +60,7 @@ export default function SearchContractor({
     }
 
     fetchContractors();
+    isFirstRender.current = false;
   }, [contractorsSearchData, selectedContractorsIds]);
 
   /** Обработчик нажатия на контрагента*/

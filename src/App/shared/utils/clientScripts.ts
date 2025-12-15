@@ -65,8 +65,9 @@ async function getContractorList(
 /** Получение обратившегося */
 async function getContractorById(
   contractorId: string,
+  isFirstRender: boolean,
   email?: string,
-  policyId?: string
+  policyId?: string,
 ): Promise<{ id: string; data: ContractorListData } | null> {
   const mockData: ContractorListData = {
     /** Идентификатор */
@@ -364,6 +365,11 @@ async function isTaskClosed(requestId: string): Promise<boolean> {
 async function OnInit(): Promise<void> {
   await randomDelay();
 }
+
+async function getContractorPolicyId(contractorId?: string): Promise<string | undefined> {
+  return;
+}
+
 export default {
   getContractorList,
   getInsuredList,
@@ -397,4 +403,5 @@ export default {
   isTaskClosed,
 
   OnInit,
+  getContractorPolicyId,
 };

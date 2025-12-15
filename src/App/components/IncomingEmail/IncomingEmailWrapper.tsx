@@ -10,19 +10,22 @@ export default function IncomingEmailWrapper() {
   const [contractorsSearchData, setContractorsSearchData] =
     useState<ContractorsSearchData>({});
   const [isLoading, setIsLoading] = useState(true);
-
+  
   useEffect(() => {
-    Scripts.OnInit().then(() => {
+    const onInitHandler = async () => {
+      await Scripts.OnInit();
+
       const currentURL = new URL(window.location.href);
       const email = currentURL.searchParams.get("email") || undefined;
       const insuredId = currentURL.searchParams.get("insuredId") || undefined;
-      const policyId = currentURL.searchParams.get("policyId") || undefined;
-
+      
       const interactionId =
-        currentURL.searchParams.get("interactionId") || undefined;
-
+      currentURL.searchParams.get("interactionId") || undefined;
+      
       const globalContractorId =
-        currentURL.searchParams.get("contractorId") || undefined;
+      currentURL.searchParams.get("contractorId") || undefined;
+
+      const policyId = currentURL.searchParams.get("policyId") || await Scripts.getContractorPolicyId(globalContractorId) || undefined;
 
       const data: ContractorsSearchData = {};
       if (email) data.email = email;
@@ -34,7 +37,9 @@ export default function IncomingEmailWrapper() {
 
       setContractorsSearchData(data);
       setIsLoading(false);
-    });
+    }
+
+    onInitHandler();
   }, []);
 
   return isLoading ? (
