@@ -14,6 +14,8 @@ export default function TasksTab(props: TaskListProps) {
     selectedInsuredIds,
     contractorsSearchData,
     selectedContractorsIds,
+    setSelectedTasksIds,
+    selectedTasksIds,
   } = props;
 
   //Состояние слайдера
@@ -70,11 +72,37 @@ export default function TasksTab(props: TaskListProps) {
     await updateTaskCount();
     await updateFilteredTaskCount();
   }
+  
+  async function updateSelectedTasks() {
+    // Если показаны закрыте задачи, то не сбрасывать
+    if(sliderActive) return;
+
+    // Фильтрация от закрытых задач
+    const notClosedRequests = await Scripts.filterClosedTasks(selectedTasksIds);
+
+    setSelectedTasksIds(notClosedRequests);
+  }
+
+  const handleUpdate = async() => {
+    setIsLoadingCounts(true);
+
+    await updateCounts();
+    // await updateSelectedTasks();
+
+    setIsLoadingCounts(false);
+  }
+
+  const handleUpdateSelectedTasks = async() => {
+    setIsLoadingSelectedIds(true);
+
+    await updateSelectedTasks();
+
+    setIsLoadingSelectedIds(false);
+  }
 
   // При изменении выбранного обращения, фильтров или общего количества задач
   useEffect(() => {
-    setIsLoading(true);
-    updateCounts().then(() => setIsLoading(false));
+    handleUpdate()
   }, [
     selectedRequestsIds,
     contractorsSearchData,
@@ -83,7 +111,16 @@ export default function TasksTab(props: TaskListProps) {
     sliderActive,
   ]);
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  useEffect(() => {
+    handleUpdateSelectedTasks()
+  },[
+    sliderActive
+  ])
+
+  const [isLoadingCounts, setIsLoadingCounts] = useState<boolean>(true);
+  const [isLoadingSelectedIds, setIsLoadingSelectedIds] = useState<boolean>(true);
+
+  const isLoading = isLoadingSelectedIds || isLoadingCounts;
   function getCountString(count: number) {
     return isLoading ? "--" : `${count}`;
   }

@@ -12,6 +12,8 @@ export default function RequestsTab(props: RequestListProps) {
     contractorsSearchData,
     selectedContractorsIds,
     selectedTasksIds,
+    selectedRequestsIds,
+    setSelectedRequestsIds,
   } = props;
 
   //Состояние слайдера
@@ -25,7 +27,6 @@ export default function RequestsTab(props: RequestListProps) {
 
   // Обновить общее количество обращений
   async function updateRequestCount() {
-    console.log("globalInsuredId", contractorsSearchData?.globalInsuredId);
     if (
       !selectedContractorsIds?.length &&
       !contractorsSearchData?.globalInsuredId
@@ -63,14 +64,39 @@ export default function RequestsTab(props: RequestListProps) {
 
   // Обновить количества
   async function updateCounts() {
+    setIsLoadingCounts(true);
+
     await updateRequestCount();
     await updateFilteredRequestsCount();
+
+    setIsLoadingCounts(false);
+  }
+
+  async function updateSelectedRequests() {
+    // Если показаны закрыте обращения, то не сбрасывать
+    if(sliderActive) return;
+
+    // Фильтрация от закрытых обращений
+    const notClosedRequests = await Scripts.filterClosedRequests(selectedRequestsIds);
+
+    setSelectedRequestsIds(notClosedRequests);
+  }
+
+  const handleUpdate = async() => {
+    await updateCounts();
+  }
+
+  const handleUpdateSelectedRequests = async() => {
+    setIsLoadingSelectedIds(true);
+
+    await updateSelectedRequests();
+
+    setIsLoadingSelectedIds(false);
   }
 
   // При изменении выбранного застрахованного, фильтров или общего количества обращений
   useEffect(() => {
-    setIsLoading(true);
-    updateCounts().then(() => setIsLoading(false));
+    handleUpdate()
   }, [
     selectedInsuredIds,
     selectedContractorsIds,
@@ -79,7 +105,16 @@ export default function RequestsTab(props: RequestListProps) {
     selectedTasksIds,
   ]);
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  useEffect(() => {
+    handleUpdateSelectedRequests()
+  },[
+    sliderActive
+  ])
+
+  const [isLoadingCounts, setIsLoadingCounts] = useState<boolean>(true);
+  const [isLoadingSelectedIds, setIsLoadingSelectedIds] = useState<boolean>(true);
+
+  const isLoading = isLoadingSelectedIds || isLoadingCounts;
   function getCountString(count: number) {
     return isLoading ? "--" : `${count}`;
   }

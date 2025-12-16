@@ -367,7 +367,18 @@ async function OnInit(): Promise<void> {
 }
 
 async function getContractorPolicyId(contractorId?: string): Promise<string | undefined> {
+  await randomDelay();
   return;
+}
+
+async function filterClosedRequests(selectedRequestsIds: string[]): Promise<string[]> {
+  await randomDelay();
+  return [];
+}
+
+async function filterClosedTasks(selectedTasksIds: string[]): Promise<string[]> {
+  await randomDelay();
+  return [];
 }
 
 export default {
@@ -404,4 +415,6 @@ export default {
 
   OnInit,
   getContractorPolicyId,
+  filterClosedRequests,
+  filterClosedTasks,
 };
