@@ -198,7 +198,7 @@ export default function ContractorList({
         count={getCountString(contractorCount)}
         isOpen={isPanelOpen}
       >
-        <div className="insured-list">
+        <div className="insured-list" style={{ minHeight: "250px" }}>
           <div className="insured-list__search">
             {/* Поле поиска */}
             <CustomInputSelect

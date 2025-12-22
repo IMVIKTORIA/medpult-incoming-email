@@ -197,14 +197,32 @@ const Deny = (
 
 const SortArrow = (
   <svg
-    width="17"
+    width="16"
     height="16"
-    viewBox="0 0 17 16"
+    viewBox="0 0 16 16"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
     <path
-      d="M5.5 10L8.5 13M8.5 13L11.5 10M8.5 13L8.5 3"
+      d="M5 10L8 13M8 13L11 10M8 13L8 3"
+      stroke="#1570EF"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+);
+
+const SortArrowDefault = (
+  <svg
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M5 10L8 13M8 13L11 10M8 13L8 3"
       stroke="#A4A7AE"
       stroke-width="1.5"
       stroke-linecap="round"
@@ -381,6 +399,7 @@ export default {
   Deny,
   /** Кнопка сортировки */
   SortArrow,
+  SortArrowDefault,
   /** Чекбокс отмечено */
   Checked,
   /** Чекбокс не отмечено */

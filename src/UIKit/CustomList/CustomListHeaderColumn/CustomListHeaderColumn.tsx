@@ -12,45 +12,25 @@ function CustomListHeaderColumn(props: ListColumnProps) {
   const { code, fr, fixedWidth, isSortable, name, handleSortClick, sortData } =
     props;
 
-  /** Переключение режима сортировки для колонки */
-  // const toggleSortColumn = () => {
-  //   let data: SortData | undefined = sortData;
-
-  //   if (data?.code !== code) {
-  //     data = new SortData({ code, isAscending: true });
-  //   } else if (data.isAscending) {
-  //     data = new SortData({ code, isAscending: false });
-  //   } else {
-  //     data = undefined;
-  //   }
-  //   handleSortClick(data);
-  // };
   const isActive = sortData?.code === code;
   const isAscending = sortData?.isAscending;
 
+  /** Переключение режима сортировки */
   const toggleSortColumn = () => {
-    let data: SortData | undefined = sortData;
+    let data: SortData | undefined;
 
-    if (data?.code !== code) {
+    if (!isActive) {
       data = new SortData({ code, isAscending: true });
+    } else if (isAscending) {
+      data = new SortData({ code, isAscending: false });
     } else {
-      // просто переключаем направление
-      data = new SortData({ code, isAscending: !data.isAscending });
+      data = undefined;
     }
 
     handleSortClick(data);
   };
 
-  const sortButton = (
-    <div
-      className={`custom-list-header-column__button ${
-        isActive ? (isAscending ? "asc" : "desc") : ""
-      }`}
-      onClick={toggleSortColumn}
-    >
-      {icons.SortArrow}
-    </div>
-  );
+  const sortIcon = isActive ? icons.SortArrow : icons.SortArrowDefault;
 
   return (
     <div
@@ -60,7 +40,17 @@ function CustomListHeaderColumn(props: ListColumnProps) {
       <div className="custom-list-header-column__name" title={name}>
         {name}
       </div>
-      {isSortable && sortButton}
+
+      {isSortable && (
+        <div
+          className={`custom-list-header-column__button ${
+            isActive ? (isAscending ? "asc" : "desc") : "default"
+          }`}
+          onClick={toggleSortColumn}
+        >
+          {sortIcon}
+        </div>
+      )}
     </div>
   );
 }
