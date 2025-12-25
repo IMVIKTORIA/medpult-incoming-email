@@ -75,6 +75,12 @@ export default function IncomingEmail({
     }
   }, [selectedContractorsIds]);
 
+  useEffect(() => {
+    if (contractorsSearchData.globalContractorId) {
+      setSelectedContractorsIds([contractorsSearchData.globalContractorId]);
+    }
+  }, [contractorsSearchData.globalContractorId]);
+
   return (
     <div className="incoming-call-modal">
       <div className="incoming-call-modal__header">
