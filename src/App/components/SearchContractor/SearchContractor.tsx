@@ -27,41 +27,55 @@ export default function SearchContractor({
   const isFirstRender = useRef(true);
 
   useEffect(() => {
+    let cancelled = false;
+    const firstRender = isFirstRender.current;
+    isFirstRender.current = false;
+
     async function fetchContractors() {
       setLoading(true);
-      //Если есть выбранный контаргент
-      if (selectedContractorsIds && selectedContractorsIds.length > 0) {
+
+      if (selectedContractorsIds.length > 0) {
         const { contractorId, policyId } = parseSelectedId(
           selectedContractorsIds[0]
         );
+
         const contractor = await Scripts.getContractorById(
           contractorId,
-          isFirstRender.current,
+          firstRender,
           contractorsSearchData.email,
-          policyId,
+          policyId
         );
 
-        if (contractor?.data) {
+        if (!cancelled && contractor?.data) {
           setContractors([contractor.data]);
           setLoading(false);
-          return;
         }
+        return;
       }
-      
-      // Если нет id — обычная логика
+
+      if (contractorsSearchData.globalContractorId) {
+        setLoading(false);
+        return;
+      }
+
       const result = await Scripts.getContractorList(
         0,
         undefined,
         contractorsSearchData
       );
-      const items = result.items.map((i) => i.data);
-      setContractors(items);
-      setLoading(false);
+
+      if (!cancelled) {
+        setContractors(result.items.map((i) => i.data));
+        setLoading(false);
+      }
     }
 
     fetchContractors();
-    isFirstRender.current = false;
-  }, [contractorsSearchData, selectedContractorsIds]);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedContractorsIds, contractorsSearchData]);
 
   /** Обработчик нажатия на контрагента*/
   const onClickContractor = async (contractor: ContractorListData) => {
@@ -112,7 +126,7 @@ export default function SearchContractor({
                 className="search-contractor__field__button"
                 onClick={() => searchContractor()}
               >
-                {icons.Change} <span>Заменить</span>
+                {icons.Change} <span>Назначить email другому контрагенту</span>
               </span>
             </div>
           </div>
